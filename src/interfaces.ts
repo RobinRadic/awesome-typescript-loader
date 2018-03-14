@@ -28,6 +28,8 @@ export interface LoaderConfig {
 	debug?: boolean
 	reportFiles?: string[]
 	context?: string
+	appendTsSuffixTo?: RegExp[]
+	appendTsxSuffixTo?: RegExp[]
 	getCustomTransformers?: string | (() => ts.CustomTransformers | undefined)
 }
 

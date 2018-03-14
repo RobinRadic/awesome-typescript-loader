@@ -177,3 +177,24 @@ export function unorderedRemoveItem<T>(array: T[], item: T): boolean {
 	}
 	return false
 }
+
+export function appendSuffixIfMatch(patterns: RegExp[], path: string, suffix: string): string {
+	if (patterns.length > 0) {
+		for (let regexp of patterns) {
+			if (path.match(regexp)) {
+				return path + suffix
+			}
+		}
+	}
+	return path
+}
+
+export function appendSuffixesIfMatch(
+	suffixDict: { [suffix: string]: RegExp[] },
+	path: string
+): string {
+	for (let suffix in suffixDict) {
+		path = appendSuffixIfMatch(suffixDict[suffix], path, suffix)
+	}
+	return path
+}

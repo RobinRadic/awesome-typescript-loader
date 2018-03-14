@@ -46,8 +46,22 @@ function compiler(loader: Loader, text: string): void {
 	const instanceName = query.instance || 'at-loader'
 	const instance = ensureInstance(loader, query, options, instanceName, rootCompiler)
 	const callback = loader.async()
-
 	let fileName = helpers.toUnix(loader.resourcePath)
+	const appendTsSuffixTo = Array.isArray(options.appendTsSuffixTo) ? options.appendTsSuffixTo : []
+	const appendTsxSuffixTo = Array.isArray(options.appendTsxSuffixTo)
+		? options.appendTsxSuffixTo
+		: []
+
+	if (appendTsSuffixTo.length > 0 || appendTsxSuffixTo.length > 0) {
+		fileName = helpers.appendSuffixesIfMatch(
+			{
+				'.ts': appendTsSuffixTo,
+				'.tsx': appendTsxSuffixTo
+			},
+			fileName
+		)
+	}
+
 	instance.compiledFiles[fileName] = true
 
 	if (DECLARATION.test(fileName)) {
